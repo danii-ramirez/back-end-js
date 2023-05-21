@@ -21,7 +21,12 @@ app.get('/product/:id', async (req, res) => {
 
     const productManager = new ProductManager()
     let product = await productManager.getProductById(idProduct)
-    res.send(product)
+
+    if (product === undefined) {
+        res.send('producto no encontrado')
+    } else {
+        res.send(product)
+    }
 })
 
 app.listen(8080, () => {
