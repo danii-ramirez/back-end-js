@@ -1,34 +1,17 @@
-const express = require('express')
-const ProductManager = require('./productManager')
+const express = require('express');
+const productsRouter = require('../routers/products.router');
+const cartsRouter = require('../routers/carts.router');
 
-const app = express()
+const PORT = 8080;
+const app = express();
 
-app.get('/products', async (req, res) => {
-    let { limit } = req.query
+// Middlewares
+app.use(express.json());
 
-    const productManager = new ProductManager()
-    let products = await productManager.getProducts()
+// Routes
+app.use('/api/products', productsRouter);
+app.use('/api/carts', cartsRouter);
 
-    if (limit !== undefined) {
-        products = products.splice(0, limit)
-    }
-
-    res.send({ products: products })
-})
-
-app.get('/product/:id', async (req, res) => {
-    let idProduct = req.params.id
-
-    const productManager = new ProductManager()
-    let product = await productManager.getProductById(idProduct)
-
-    if (product === undefined) {
-        res.send('producto no encontrado')
-    } else {
-        res.send(product)
-    }
-})
-
-app.listen(8080, () => {
-    console.log('server runnig port 8080')
-})
+app.listen(PORT, () => {
+    console.log(`server runnig port ${PORT}`);
+});
