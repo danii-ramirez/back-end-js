@@ -1,5 +1,5 @@
 const Router = require('express');
-const ProductManager = require('../src/productManager');
+const ProductManager = require('../productManager');
 
 const router = Router();
 
@@ -50,8 +50,6 @@ router.post('/', async (req, res) => {
         }
 
         const productManager = new ProductManager();
-
-        let prod = await productManager.getProductById(idProduct);
 
         let products = await productManager.getProducts();
 
