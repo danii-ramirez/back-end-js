@@ -1,6 +1,6 @@
 const Router = require('express');
 const Product = require('../dao/models/modelProduct');
-const ProductManager = require('../dao/productManager');
+const ProductManager = require('../dao/fileSystem/productManager');
 
 const router = Router();
 
@@ -16,12 +16,11 @@ router.get('/', async (req, res) => {
     }
 
     let products = await Product
-        // .aggregate([
-        //     {
-        //         $match: { name: 'asd' }
-        //     }
-        // ])
         .paginate({}, { limit })
+        .aggregate([
+            // { $match: { name: 'asd' } },
+            { $limit: limit }
+        ])
 
     res.send(products);
 });
