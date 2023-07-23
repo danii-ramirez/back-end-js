@@ -1,17 +1,27 @@
 const Router = require('express');
-const ProductManager = require('../productManager');
+const Product = require('../dao/models/modelProduct');
+const ProductManager = require('../dao/productManager');
 
 const router = Router();
 
 router.get('/', async (req, res) => {
-    let { limit } = req.query;
+    let { limit, page, sort, query } = req.query;
 
-    const productManager = new ProductManager();
-    let products = await productManager.getProducts();
-
-    if (limit !== undefined) {
-        products = products.splice(0, limit);
+    if (limit === undefined) {
+        limit = 10;
     }
+
+    if (page === undefined) {
+        page = 1
+    }
+
+    let products = await Product
+        // .aggregate([
+        //     {
+        //         $match: { name: 'asd' }
+        //     }
+        // ])
+        .paginate({}, { limit })
 
     res.send(products);
 });

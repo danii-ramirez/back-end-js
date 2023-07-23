@@ -4,9 +4,10 @@ const productsRouter = require('./routers/products.router');
 const cartsRouter = require('./routers/carts.router');
 const viewsRouter = require('./routers/views.router');
 const { Server } = require('socket.io');
-const ProductManager = require('./productManager')
+const ProductManager = require('./dao/productManager');
+const CONFIG = require('./config/config')
+const database = require('./dao/db.js');
 
-const PORT = 8080;
 const app = express();
 
 // Handlebars
@@ -24,8 +25,9 @@ app.use('/api/carts', cartsRouter);
 
 app.use('/', viewsRouter);
 
-const httpServer = app.listen(PORT, () => {
-    console.log(`server runnig port ${PORT}`);
+const httpServer = app.listen(CONFIG.PORT, () => {
+    console.log(`server runnig port ${CONFIG.PORT}`);
+    database.connect();
 });
 
 const productManager = new ProductManager();
