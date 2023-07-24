@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const CONFIG = require('../config/config')
 
+const Product = require('./models/modelProduct')
+
 module.exports = {
     connect: async () => {
         try {

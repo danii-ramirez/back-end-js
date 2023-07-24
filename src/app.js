@@ -4,7 +4,7 @@ const productsRouter = require('./routers/products.router');
 const cartsRouter = require('./routers/carts.router');
 const viewsRouter = require('./routers/views.router');
 const { Server } = require('socket.io');
-const ProductManager = require('./dao/productManager');
+const ProductManager = require('./dao/fileSystem/productManager');
 const CONFIG = require('./config/config')
 const database = require('./dao/db.js');
 
