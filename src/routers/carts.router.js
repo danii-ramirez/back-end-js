@@ -1,21 +1,20 @@
 const Router = require('express');
 const Cart = require('../dao/models/modelCart')
-const CartManager = require('../dao/fileSystem/cartManager')
 
 const router = Router();
 
 router.post('/', async (req, res) => {
     const cart = await Cart.create({
-        date: '06/06/2023'
+        date: new Date().toLocaleDateString()
     });
 
     res.send(cart);
 });
 
-router.get('/:pid', async (req, res) => {
+router.get('/:cid', async (req, res) => {
     try {
-        let id = req.params.pid;
-        const cart = await Cart.findById(id);
+        let id = req.params.cid;
+        const cart = await Cart.findOne({ _id: id });
         res.send(cart);
     } catch (error) {
         res.send('cart not found');
@@ -30,39 +29,71 @@ router.post('/:cid/product/:pid', async (req, res) => {
     cart.products.push(
         {
             product: pid,
-            quantity: 2
+            quantity: 0
         }
     )
 
     const newCart = await Cart.updateOne({ _id: cid }, cart)
     res.send(newCart);
+});
 
-    // const cartManager = new CartManager();
+router.delete('/:cid/products/:pid', async (req, res) => {
+    try {
+        let cid = req.params.cid;
+        let pid = req.params.pid;
 
-    // let cart = await cartManager.getCartById(cid);
+        const cart = await Cart.findById(cid);
+        cart.products = cart.products.filter(x => x.product._id != pid)
+        await cart.updateOne(cart)
+        res.send(cart);
+    } catch (error) {
+        res.send(error)
+    }
+});
 
-    // if (cart === undefined) {
-    //     res.send('cart not found')
-    // } else {
-    //     var prod = cart.products.find(x => x.product == pid)
+router.put('/:cid', async (req, res) => {
+    try {
+        let cid = req.params.cid;
+        let product = {
+            ...req.body
+        };
 
-    //     if (prod === undefined) {
-    //         prod = {
-    //             product: parseInt(pid),
-    //             quantity: 1
-    //         };
+        const cart = await Cart.findById(cid);
+        cart.products.push({ product: product.id })
+        await cart.updateOne(cart)
+        res.send('Ok')
+    } catch (error) {
+        res.send(error)
+    }
+});
 
-    //         cart.products.push(prod);
-    //     } else {
-    //         let prodIndex = cart.products.findIndex(x => x.product == pid);
-    //         prod.quantity++;
-    //         cart.products[prodIndex] = prod;
-    //     }
+router.put('/:cid/products/:pid', async (req, res) => {
+    try {
+        let cid = req.params.cid;
+        let pid = req.params.pid;
+        let product = {
+            ...req.body
+        };
 
-    //     await cartManager.updateCart(cart);
+        const cart = await Cart.findById(cid);
+        cart.products.find(x => x.product._id == pid).quantity = product.quantity;
+        await cart.updateOne(cart);
+        res.send(cart);
+    } catch (error) {
+        res.send(error);
+    }
+});
 
-    //     res.send(cart);
-    // }
+router.delete('/:cid', async (req, res) => {
+    try {
+        let cid = req.params.cid;
+        const cart = await Cart.findById(cid);
+        cart.products = [];
+        await cart.updateOne(cart);
+        res.send('Ok');
+    } catch (error) {
+        res.send(error);
+    }
 });
 
 module.exports = router;
