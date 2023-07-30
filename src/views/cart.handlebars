@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <h1>Cart</h1>
+            {{#if cart.products}}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each cart.products}}
+                    <tr>
+                        <td>{{this.product.name}}</td>
+                        <td>${{this.product.price}}</td>
+                        <td style="text-align: end;">{{this.quantity}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            {{else}}
+            <p>no products added</p>
+            {{/if}}
+        </div>
+    </div>
+</div>
