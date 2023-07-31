@@ -1,33 +1,31 @@
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-auto">
-            <h1>Products</h1>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Stock</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each products}}
-                    <tr>
-                        <td>{{this.name}}</td>
-                        <td>{{this.category}}</td>
-                        <td>${{this.price}}</td>
-                        <td>{{this.stock}}</td>
-                        <td>
-                            <button type="button" class="btn btn-primary">
-                                add to cart
-                            </button>
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-        </div>
+<div class="row justify-content-center">
+    <div class="col-auto">
+        <h1>Products</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each products}}
+                <tr>
+                    <td>{{this.name}}</td>
+                    <td>{{this.category}}</td>
+                    <td>${{this.price}}</td>
+                    <td>{{this.stock}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary">
+                            add to cart
+                        </button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
     </div>
 </div>

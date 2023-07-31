@@ -1,14 +1,11 @@
 const express = require('express');
-const Product = require('../dao/models/modelProduct')
-const Cart = require('../dao/models/modelCart')
-const ProductManager = require('../dao/fileSystem/productManager');
+const Product = require('../dao/models/modelProduct');
+const Cart = require('../dao/models/modelCart');
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const productManager = new ProductManager();
-    const products = await productManager.getProducts();
-    res.render('home', { products });
+    res.render('login')
 })
 
 router.get('/realtimeproducts', async (req, res) => {
@@ -16,7 +13,7 @@ router.get('/realtimeproducts', async (req, res) => {
 })
 
 router.get('/products', async (req, res) => {
-    const json = await Product.find()
+    const json = await Product.find();
     const products = JSON.parse(JSON.stringify(json));
     res.render('products', { products });
 });
@@ -27,5 +24,36 @@ router.get('/cart', async (req, res) => {
     console.log(cart);
     res.render('cart', { cart });
 })
+
+router.get('/login', (req, res) => {
+    res.render('login');
+})
+
+router.get('/register', (req, res) => {
+    res.render('register');
+})
+
+router.get('/perfil', isAuthenticated, (req, res) => {
+    res.render('perfil');
+})
+
+router.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            res.send('Faild logout');
+        }
+        else {
+            res.redirect('login');
+        }
+    })
+})
+
+function isAuthenticated(req, res, next) {
+    if (req.session.isAuthenticated) {
+        next();
+    } else {
+        res.redirect('login');
+    }
+}
 
 module.exports = router;
