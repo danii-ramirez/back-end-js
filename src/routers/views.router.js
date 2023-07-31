@@ -12,10 +12,11 @@ router.get('/realtimeproducts', async (req, res) => {
     res.render('realTimeProducts');
 })
 
-router.get('/products', async (req, res) => {
+router.get('/products', isAuthenticated, async (req, res) => {
     const json = await Product.find();
     const products = JSON.parse(JSON.stringify(json));
-    res.render('products', { products });
+
+    res.render('products', { products, firstName: req.session.firstName });
 });
 
 router.get('/cart', async (req, res) => {
@@ -34,7 +35,7 @@ router.get('/register', (req, res) => {
 })
 
 router.get('/perfil', isAuthenticated, (req, res) => {
-    res.render('perfil');
+    res.render('perfil', { firstName: req.session.firstName, rol: req.session.rol });
 })
 
 router.get('/logout', (req, res) => {

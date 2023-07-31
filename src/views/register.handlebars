@@ -1,12 +1,42 @@
-<div class="row">
-    <div class="col-auto">
-        <h1>Register</h1>
+<form action="/auth/register" method="post" autocomplete="off">
 
-        <form action="/view/register" method="post">
-            <input type="text" name="firstname" placeholder="Name">
-            <input type="text" name="email" placeholder="Email">
-            <input type="password" name="password" placeholder="Password">
-            <button type="submit" value="enviar">Submit</button>
-        </form>
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <h1>Register</h1>
+        </div>
     </div>
-</div>
+
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <label for="firstname">First name</label>
+            <input type="text" id="firsname" name="firstName" class="form-control" required autocomplete="off">
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <label for="lastname">Last name</label>
+            <input type="text" id="lastname" name="lastName" class="form-control" required autocomplete="off">
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" class="form-control" required autocomplete="off">
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" required autocomplete="off">
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-3">
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+    </div>
+</form>

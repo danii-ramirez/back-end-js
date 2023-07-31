@@ -6,16 +6,16 @@
 
 <form action="/auth/login" method="post">
     <div class="row justify-content-center">
-        <div class="col-auto">
+        <div class="col-4">
             <label for="email">Email</label>
-            <input type="text" id="email" name="email" class="form-control">
+            <input type="text" id="email" name="email" class="form-control" required>
         </div>
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-auto">
+        <div class="col-4">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control">
+            <input type="password" id="password" name="password" class="form-control" required>
         </div>
     </div>
 
@@ -29,7 +29,7 @@
 <div class="row justify-content-center mt-3">
     <div class="col-auto">
         <span>
-            <a href="#">Registrer</a>
+            <a href="/register">Registrer</a>
         </span>
     </div>
 </div>
