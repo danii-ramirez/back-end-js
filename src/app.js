@@ -9,7 +9,9 @@ const ProductManager = require('./dao/fileSystem/productManager');
 const CONFIG = require('./config/config')
 const database = require('./dao/db.js');
 const session = require('express-session')
-const MongoStore = require('connect-mongo')
+const MongoStore = require('connect-mongo');
+const passport = require('passport');
+require('./config/github')
 
 const app = express();
 
@@ -24,6 +26,7 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+app.use(passport.initialize());
 
 // Handlebars
 app.engine('handlebars', handlebars.engine());
