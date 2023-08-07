@@ -10,10 +10,12 @@ const UserScheme = new mongoose.Schema({
         require: true
     },
     email: {
-        type: String,
-        require: true
+        type: String
     },
     password: {
+        type: String
+    },
+    idGitHub: {
         type: String
     }
 });

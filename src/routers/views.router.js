@@ -16,6 +16,8 @@ router.get('/products', isAuthenticated, async (req, res) => {
     const json = await Product.find();
     const products = JSON.parse(JSON.stringify(json));
 
+    console.log(req.headers.authorization);
+
     res.render('products', { products, firstName: req.session.firstName });
 });
 
