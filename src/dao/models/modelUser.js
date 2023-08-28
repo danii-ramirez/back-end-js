@@ -32,7 +32,7 @@ const UserScheme = new mongoose.Schema({
 });
 
 UserScheme.pre('findOne', function () {
-    this.populate("carts.cart")
+    this.populate("cart");
 })
 
 const User = mongoose.model('User', UserScheme);

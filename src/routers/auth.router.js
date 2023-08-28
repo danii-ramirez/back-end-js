@@ -1,5 +1,6 @@
 const Router = require('express');
 const User = require('../dao/models/modelUser');
+const Cart = require('../dao/models/modelCart')
 const passport = require('passport');
 const jwt = require('jsonwebtoken')
 
@@ -11,6 +12,11 @@ router.post('/register', async (req, res) => {
     }
 
     try {
+        const cart = await Cart.create({
+            date: new Date().toLocaleDateString()
+        });
+
+        user.cart = cart._id;
         const response = await User.create(user);
 
         res.redirect('/login')
