@@ -15,10 +15,25 @@ const UserScheme = new mongoose.Schema({
     password: {
         type: String
     },
+    age: {
+        type: Number
+    },
+    cart: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Cart"
+    },
+    role: {
+        type: String,
+        default: 'user'
+    },
     idGitHub: {
         type: String
     }
 });
+
+UserScheme.pre('findOne', function () {
+    this.populate("carts.cart")
+})
 
 const User = mongoose.model('User', UserScheme);
 module.exports = User;

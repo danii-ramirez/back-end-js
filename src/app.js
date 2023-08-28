@@ -4,6 +4,7 @@ const productsRouter = require('./routers/products.router');
 const cartsRouter = require('./routers/carts.router');
 const viewsRouter = require('./routers/views.router');
 const authRouter = require('./routers/auth.router');
+const sessionsRouter = require('./routers/sessions.router');
 const { Server } = require('socket.io');
 const ProductManager = require('./dao/fileSystem/productManager');
 const CONFIG = require('./config/config')
@@ -12,6 +13,8 @@ const session = require('express-session')
 const MongoStore = require('connect-mongo');
 const passport = require('passport');
 require('./config/github')
+const { initializatePassport } = require('./config/passport')
+const cookieParser = require('cookie-parser')
 
 const app = express();
 
@@ -22,11 +25,13 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: CONFIG.DB
     }),
-    secret: 'secret',
+    secret: 'mysecret',
     resave: true,
     saveUninitialized: true
 }));
+app.use(cookieParser());
 app.use(passport.initialize());
+initializatePassport();
 
 // Handlebars
 app.engine('handlebars', handlebars.engine());
@@ -39,6 +44,7 @@ app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/', viewsRouter);
 app.use('/auth', authRouter);
+app.use('/api/sessions', sessionsRouter);
 
 const httpServer = app.listen(CONFIG.PORT, () => {
     console.log(`server runnig port ${CONFIG.PORT}`);

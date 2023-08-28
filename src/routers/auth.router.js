@@ -28,12 +28,13 @@ router.post('/login', async (req, res) => {
     if (user.email.toLowerCase() == 'admincoder@code.com' && user.password == 'adminCod3r123') {
         req.session.firstName = 'admincoder@code.com';
         req.session.rol = 'admin';
-        req.session.isAuthenticated = true;
 
-        let token = jwt.sign(userResponse, 'mysecrect', { expiresIn: 60 });
-        req.headers.authorization = 'bearen ' + token; w
+        let token = jwt.sign(
+            { email: user.email, pass: user.password, rol: 'admin' },
+            'mysecrect',
+            { expiresIn: 180 });
 
-        res.redirect('/products');
+        res.cookie('cookieJwt', token).redirect('/products');
     } else {
         try {
             const userResponse = await User.findOne({ email: user.email, password: user.password });
@@ -43,13 +44,13 @@ router.post('/login', async (req, res) => {
             } else {
                 req.session.firstName = userResponse.firstName;
                 req.session.rol = 'user';
-                req.session.isAuthenticated = true;
 
-                let token = jwt.sign(JSON.parse(JSON.stringify(userResponse)), 'mysecrect', { expiresIn: 60 });
-                // req.headers.authorization = 'bearen ' + token;
-                console.log(token)
-                // res.header.authorization = 'bearen ' + token;
-                res.redirect('/products');
+                let token = jwt.sign(
+                    { email: user.email, pass: user.password, rol: userResponse.role },
+                    'mysecrect',
+                    { expiresIn: 180 });
+
+                res.cookie('cookieJwt', token).redirect('/products');
             }
         } catch (error) {
             console.log(error);

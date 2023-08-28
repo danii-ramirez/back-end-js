@@ -1,6 +1,7 @@
 const express = require('express');
 const Product = require('../dao/models/modelProduct');
 const Cart = require('../dao/models/modelCart');
+const passport = require('passport');
 
 const router = express.Router();
 
@@ -12,16 +13,13 @@ router.get('/realtimeproducts', async (req, res) => {
     res.render('realTimeProducts');
 })
 
-router.get('/products', isAuthenticated, async (req, res) => {
+router.get('/products', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const json = await Product.find();
     const products = JSON.parse(JSON.stringify(json));
-
-    console.log(req.headers.authorization);
-
     res.render('products', { products, firstName: req.session.firstName });
 });
 
-router.get('/cart', async (req, res) => {
+router.get('/cart', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const json = await Cart.findOne({ _id: '64beee5af2e2fa32f325032e' });
     const cart = JSON.parse(JSON.stringify(json));
     console.log(cart);
@@ -36,27 +34,25 @@ router.get('/register', (req, res) => {
     res.render('register');
 })
 
-router.get('/perfil', isAuthenticated, (req, res) => {
+router.get('/perfil', passport.authenticate('jwt', { session: false }), (req, res) => {
     res.render('perfil', { firstName: req.session.firstName, rol: req.session.rol });
 })
 
 router.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
+
             res.send('Faild logout');
         }
         else {
+            res.clearCookie('cookieJwt');
             res.redirect('login');
         }
     })
 })
 
-function isAuthenticated(req, res, next) {
-    if (req.session.isAuthenticated) {
-        next();
-    } else {
-        res.redirect('login');
-    }
-}
+router.get('*', (req, res) => {
+    res.render('notFound');
+});
 
 module.exports = router;
